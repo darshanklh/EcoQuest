@@ -1,0 +1,1308 @@
+body { font-family: 'Inter', sans-serif; }
+/* --- Toast Notification for Login Streaks --- */
+.toast-notification {
+    position: fixed;
+    top: -100px; /* Start off-screen */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #22c55e; /* Your primary green color */
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 9999px; /* pill shape */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    font-weight: 600;
+    transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.toast-notification.show {
+    top: 20px; /* Animate to this position */
+}
+
+    
+    .modal-backdrop {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(0, 0, 0, 0.6); z-index: 40;
+        opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+    }
+    .modal {
+        position: fixed; top: 50%; left: 50%;
+        transform: translate(-50%, -45%); z-index: 50;
+        opacity: 0; transition: all 0.3s ease; pointer-events: none;
+    }
+    .modal.show { transform: translate(-50%, -50%); opacity: 1; pointer-events: all; }
+    .modal-backdrop.show { opacity: 1; pointer-events: all; }
+    .sidebar-link.active {
+            background-color: #22c55e; /* green-500 */
+            color: white;
+    }
+    #login-view {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=2070&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+    }
+
+/* Page specific backgrounds */
+main { transition: background-image 0.5s ease-in-out; }
+.dashboard-background {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), url('https://images.unsplash.com/photo-1444464666168-49d633b86797?q=80&w=2069&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+.dark .dashboard-background {
+    background-image: linear-gradient(rgba(17, 24, 39, 0.2), rgba(17, 24, 39, 0.2)), url('https://images.unsplash.com/photo-1444464666168-49d633b86797?q=80&w=2069&auto=format&fit=crop');
+}
+.tasks-background {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), url('https://images.unsplash.com/photo-1476231682828-37e571bc172f?q=80&w=1974&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+.dark .tasks-background {
+    background-image: linear-gradient(rgba(17, 24, 39, 0.2), rgba(17, 24, 39, 0.2)), url('https://images.unsplash.com/photo-1476231682828-37e571bc172f?q=80&w=1974&auto=format&fit=crop');
+}
+.points-background {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), url('https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+.dark .points-background {
+    background-image: linear-gradient(rgba(17, 24, 39, 0.2), rgba(17, 24, 39, 0.2)), url('https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=2070&auto=format&fit=crop');
+}
+.achievements-background {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), url('https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?q=80&w=2072&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+.dark .achievements-background {
+    background-image: linear-gradient(rgba(17, 24, 39, 0.2), rgba(17, 24, 39, 0.2)), url('https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?q=80&w=2072&auto=format&fit=crop');
+}
+.quizzes-background {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1856&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+.dark .quizzes-background {
+    background-image: linear-gradient(rgba(17, 24, 39, 0.2), rgba(17, 24, 39, 0.2)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1856&auto=format&fit=crop');
+}
+    .grayscale { filter: grayscale(100%); }
+    .quiz-option.selected {
+        border-color: #22c55e;
+        background-color: #dcfce7;
+    }
+    .dark .quiz-option.selected {
+        background-color: #166534;
+    }
+
+    /* --- Custom Animated Button Styles --- */
+    .animated-button {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        background: linear-gradient(45deg, #10b981, #22c55e);
+        transition: all 0.3s ease;
+    }
+    .animated-button .text {
+        display: block;
+        transition: all 0.3s ease;
+    }
+    .animated-button .icon {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%) translateX(80px);
+        opacity: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    .animated-button:hover {
+            background: linear-gradient(45deg, #22c55e, #10b981);
+    }
+    .animated-button:hover .text {
+        transform: translateX(-20px);
+    }
+    .animated-button:hover .icon {
+        transform: translateY(-50%) translateX(20px);
+        opacity: 1;
+    }
+    /* --- Energy Saver Game Styles --- */
+    .energy-game-header {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.25rem;
+        font-weight: bold;
+        padding: 0 1rem 1rem 1rem;
+    }
+
+    .house-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        padding: 1rem;
+        background-color: #e5e7eb; /* gray-200 */
+        border-radius: 0.5rem;
+        height: 350px;
+    }
+
+    .dark .house-container {
+        background-color: #374151; /* gray-700 */
+    }
+
+    .room {
+        border: 2px solid #9ca3af; /* gray-400 */
+        border-radius: 0.5rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .appliance {
+        padding: 0.5rem 1rem;
+        border-radius: 9999px; /* rounded-full */
+        background-color: #9ca3af; /* gray-400 */
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        user-select: none; /* Prevents text highlighting on click */
+    }
+
+    /* Style for when an appliance is ON */
+    .appliance.on {
+        background-color: #facc15; /* yellow-400 */
+        box-shadow: 0 0 15px #facc15, 0 0 20px #fde047;
+        transform: scale(1.05);
+    }
+
+    .puzzle-header {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+    .puzzle-header h4 {
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+    .puzzle-header p {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #f59e0b; /* amber-500 */
+    }
+
+.commute-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    gap: 4px;
+    width: 100%;
+    max-width: 480px; /* Add a max-width to keep it neat */
+    margin-left: auto;   /* Center the grid horizontally */
+    margin-right: auto;  /* Center the grid horizontally */
+    
+    /* This is the key change: it makes the height equal to the width */
+    aspect-ratio: 1 / 1; 
+
+    background-color: #d1d5db; /* gray-300 */
+    padding: 4px;
+    border-radius: 0.5rem;
+}
+
+    .tile {
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+        transition: transform 0.2s ease;
+    }
+    .tile:hover {
+        transform: scale(1.1);
+        filter: brightness(1.1);
+    }
+
+    /* Tile types */
+    .tile.road { background-color: #6b7280; } /* gray-500 */
+    .tile.bike { background-color: #22c55e; } /* green-500 */
+    .tile.bus { background-color: #3b82f6; } /* blue-500 */
+    .tile.start { background-color: #fde047; } /* yellow-300 */
+    .tile.end { background-color: #ef4444; } /* red-500 */
+
+    /* Path styling */
+    .tile.path {
+        box-shadow: inset 0 0 0 4px white;
+        filter: brightness(1.2);
+    }
+    .tile.path.start {
+        box-shadow: none; /* Don't put a ring on the start tile */
+    }
+    /* --- Bag Dodger Game Styles --- */
+    #game-canvas {
+        background-color: #dbeafe; /* blue-100 */
+        border-radius: 0.5rem;
+        cursor: grab;
+    }
+    .dark #game-canvas {
+        background-color: #1e3a8a; /* blue-900 */
+    }
+
+    /* A class to add a temporary visual effect when the player is hit */
+    .player-hit {
+        animation: hit-animation 0.3s ease-out;
+    }
+
+    @keyframes hit-animation {
+        0% { filter: brightness(1); }
+        50% { filter: brightness(2) drop-shadow(0 0 5px #ef4444); }
+        100% { filter: brightness(1); }
+    }
+    /* Add this to your styles.css */
+    #game-canvas.game-background {
+        background-image: url('https://thumbnails.yayimages.com/1600/a/2c6/a2c60a4.jpg'); /* A nice tileable grass background */
+        background-repeat: repeat;
+        background-size: 64px 64px; /* Adjust based on your tile size */
+    }
+    /* --- Memory Match Puzzle Styles --- */
+#puzzle-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    width: 100%;
+    max-width: 340px;
+    margin-left: auto;
+    margin-right: auto;
+    perspective: 1000px;
+}
+/* Replace the old .puzzle-card rule with these two new ones */
+
+.puzzle-card {
+    aspect-ratio: 1 / 1;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: all 0.3s ease; /* Make transition smooth for all properties */
+    cursor: pointer;
+}
+
+.puzzle-card:hover {
+    transform: scale(1.05) translateY(-4px); /* Slightly enlarge and lift the card */
+    z-index: 10; /* Ensure the hovered card is on top of others */
+}
+.puzzle-card.flipped, .puzzle-card.matched {
+    transform: rotateY(180deg);
+}
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.25rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+.card-front {
+    background-color: #fff;
+    transform: rotateY(180deg);
+}
+.dark .card-front { background-color: #374151; }
+.card-back {
+    background: linear-gradient(45deg, #10b981, #22c55e);
+    color: white;
+    font-size: 2.5rem;
+}
+.puzzle-card.matched .card-front {
+    background-color: #dcfce7;
+}
+.dark .puzzle-card.matched .card-front {
+    background-color: #166534;
+}
+
+
+
+
+/* Add the puzzle background class */
+.puzzles-background {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1932&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+.dark .puzzles-background {
+    background-image: linear-gradient(rgba(17, 24, 39, 0.4), rgba(17, 24, 39, 0.4)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1932&auto=format&fit=crop');
+}
+.weekly-tasks-background {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2074&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+}
+.dark .weekly-tasks-background {
+    background-image: linear-gradient(rgba(17, 24, 39, 0.4), rgba(17, 24, 39, 0.4)), url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=2074&auto=format&fit=crop');
+}
+/* CORRECTED style for the weekly task card */
+#weekly-task-container .weekly-card {
+    /* The semi-transparent "glass" effect */
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px); /* This creates the blur */
+    -webkit-backdrop-filter: blur(8px); /* For Safari compatibility */
+    
+    /* General card styling */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1.5rem; /* 24px */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Dark mode version */
+.dark #weekly-task-container .weekly-card {
+    background-color: rgba(31, 41, 55, 0.75); /* gray-800 with 75% opacity */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* Unified style for page subtitles (Dashboard, Puzzles, Weekly Tasks, etc.) */
+.page-content > p {
+    font-size: 1.1rem;      /* A nice, readable subtitle size */
+    font-weight: 600;       /* A lighter, more elegant font weight */
+    color: #191b1f;         /* A soft, dark slate gray for light mode */
+    margin-bottom: 2rem;    /* Keeps your existing spacing (Tailwind's mb-8) */
+    max-width: 65ch;        /* Prevents lines from becoming too long on wide screens */
+}
+
+/* And the corresponding style for dark mode */
+.dark .page-content > p {
+    color: #A0AEC0;         /* A softer, lighter gray for dark mode */
+}
+/* Style for page subtitles (Dashboard, Puzzles, etc.) */
+.page-content > h2 + p {
+    font-weight: 600;       /* Lighter font weight */
+    color: #ffffff;         /* A soft, dark slate gray for light mode */
+    margin-bottom:1rem;
+    max-width: 85ch;
+}
+.dark .page-content > h2 + p {
+    color: #A0AEC0;         /* A softer, lighter gray for dark mode */
+}
+
+/* ADD THIS TO styles.css */
+/* Unified style for the description text inside ALL cards */
+.card-description {
+    color: #8892a5;         /* A soft, dark slate gray for light mode */
+    font-size: 1rem;      /* CHANGE THIS VALUE to adjust the size for all cards */
+    line-height: 1.6;       /* Improves readability */
+}
+
+.dark .card-description {
+    color: #CBD5E0;         /* Lighter gray for dark mode */
+}
+/* ADD THIS to styles.css */
+
+/* --- Simple Green Button Style --- */
+.simple-green-button {
+    background-color: #09a35b; /* green-500 */
+    color: white;
+    font-weight: bold;
+    border-radius: 0.5rem; /* 8px */
+    padding: 0.5rem 2rem; /* py-2 px-8 */
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    transition: all 0.2s ease;
+}
+
+.simple-green-button:hover {
+    background-color: #444a46; /* green-600 */
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+/* --- Tree Growth Animation Styles --- */
+
+/* 1. The container that holds the trees */
+#tree-animation-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Ensures trees don't pop out of the container */
+    pointer-events: none; /* Allows clicks to pass through to elements behind it */
+    z-index: 0; /* Places it behind the main content but above the background */
+}
+
+/* 2. The style for each individual tree image */
+.growing-tree {
+    position: absolute;
+    width: 150px; /* Adjust size as needed */
+    height: auto;
+    opacity: 0; /* Start invisible */
+    transform-origin: bottom center; /* Animation grows from the bottom */
+    transform: scale(0); /* Start at zero size */
+}
+
+/* 3. The keyframe animation that defines the "grow" effect */
+@keyframes grow-in {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    70% {
+        opacity: 1;
+        transform: scale(1.1); /* Slightly overshoot for a bouncy effect */
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1); /* Settle at final size */
+    }
+}
+
+/* 4. The trigger: when the container has the .animate class, run the animation on the trees */
+#tree-animation-container.animate .growing-tree {
+    /* Apply the animation */
+    animation: grow-in 0.8s ease-out forwards;
+}
+
+/* 5. Stagger the animations for a more natural effect */
+.growing-tree:nth-child(2) { animation-delay: 0.3s; }
+.growing-tree:nth-child(3) { animation-delay: 0.7s; }
+.growing-tree:nth-child(4) { animation-delay: 1.1s; }
+.growing-tree:nth-child(5) { animation-delay: 0.5s; }
+
+
+/* === UNIFIED BUTTON SYSTEM === */
+
+/* 1. Base Button Style */
+/* In styles.css */
+
+/* Base style for ALL new buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    user-select: none;
+}
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+/* ... inside styles.css ... */
+
+.btn:active {
+    transform: translateY(0px);
+    box-shadow: none;
+}
+
+/* ⬇️ PASTE THE NEW CODE HERE ⬇️ */
+/* 2. Primary Action Button (Solid, Green) */
+.btn-primary {
+    background: linear-gradient(45deg, #10b981, #22c55e);
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(34, 197, 94, 0.3);
+}
+.btn-primary:hover {
+    box-shadow: 0 7px 15px -3px rgba(34, 197, 94, 0.4);
+}
+/* ⬆️ END OF NEW CODE ⬆️ */
+
+
+/* Secondary (outline) style specifically for the quiz buttons */
+.btn-secondary {
+    background-color: transparent;
+    border-color: #22c55e; /* green-500 */
+    color: #22c55e;
+}
+
+/* ... etc ... */
+
+.dark .btn-secondary {
+    color: #4ade80; /* Brighter green for dark mode contrast */
+    border-color: #4ade80;
+}
+.btn-secondary:hover {
+    background-color: #22c55e;
+    color: white;
+}
+.dark .btn-secondary:hover {
+    background-color: #4ade80;
+    color: #111827; /* Dark text for high contrast */
+}
+
+/* 3. Secondary Action Button (Outline) */
+.btn-secondary {
+    background-color: transparent;
+    border-color: #22c55e; /* green-500 */
+    color: #22c55e;
+}
+.dark .btn-secondary {
+    color: #4ade80; /* Brighter green for dark mode contrast */
+    border-color: #4ade80;
+}
+.btn-secondary:hover {
+    background-color: #22c55e;
+    color: white;
+}
+.dark .btn-secondary:hover {
+    background-color: #4ade80;
+    color: #111827; /* Dark text for high contrast on the bright green */
+}
+
+/* 4. Ghost/Tertiary Action Button (Subtle) */
+.btn-ghost {
+    background-color: transparent;
+    color: #4b5563; /* gray-600 */
+    box-shadow: none;
+}
+.dark .btn-ghost {
+    color: #d1d5db; /* gray-300 */
+}
+.btn-ghost:hover {
+    background-color: #f3f4f6; /* gray-100 */
+    box-shadow: none; /* Override the default hover shadow */
+}
+.dark .btn-ghost:hover {
+    background-color: #374151; /* gray-700 */
+}
+.skeleton {
+    background-color: #e5e7eb; /* A light gray color */
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.dark .skeleton {
+    background-color: #4b5563; /* A darker gray for dark mode */
+}
+
+@keyframes pulse {
+  50% {
+    opacity: .5;
+  }
+}
+/* =============================================== */
+/* Styles for the "Learn About" Video Modal     */
+/* =============================================== */
+
+#learn-about-modal .modal-content {
+    background-color: #282c34; 
+    width: 100%;
+    max-width: 48rem; 
+    border-radius: 1rem; 
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.55); 
+    display: flex;
+    flex-direction: column;
+    padding: 4rem 2rem; /* CHANGED: Increased top/bottom padding */
+    gap: 1.5rem; 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Dark mode styles for the modal content */
+.dark #learn-about-modal .modal-content {
+    background-color: #1f2937; /* Equivalent to dark:bg-gray-800 */
+}
+
+#learn-about-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#learn-about-modal .modal-video-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 0.5rem; /* Equivalent to rounded-lg */
+    overflow: hidden;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* Equivalent to shadow-lg */
+}
+
+#learn-about-modal .modal-video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+}
+
+#learn-about-modal .modal-footer {
+    text-align: center;
+}
+
+/* Specific styling for the green "Start Quiz" button */
+#learn-about-modal .btn-start-quiz {
+    background-color: #10B981; /* A nice green color */
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem 2rem; /* Equivalent to px-8 py-3 */
+    border-radius: 0.5rem; /* Equivalent to rounded-lg */
+    transition: background-color 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+#learn-about-modal .btn-start-quiz:hover {
+    background-color: #059669; /* A darker green on hover */
+}
+/* --- Certificate Styles --- */
+.certificate-base {
+    border: 10px solid #ccc;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Tier-specific styles */
+.cert-gold {
+    border-color: #D4AF37;
+    box-shadow: 0 0 20px rgba(255, 217, 0, 0.5);
+}
+.cert-silver {
+    border-color: #C0C0C0;
+    box-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
+}
+.cert-bronze {
+    border-color: #b14e19;
+    box-shadow: 0 0 20px rgba(205, 127, 50, 0.5);
+}
+
+.cert-link {
+    color: #1d4ed8; /* blue-700 */
+    text-decoration: underline;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    margin-left: 0.75rem;
+}
+.dark .cert-link {
+    color: #60a5fa; /* blue-400 */
+}
+/* --- Certificate Text Color Tiers --- */
+.text-gold { color: #D4AF37; } /* Dark Goldenrod */
+.text-silver { color: #C0C0C0; } /* Dark Gray */
+.text-bronze { color: #a23d1b; } /* Rich Brown */
+
+.dark .text-gold { color: #D4AF37; } /* Bright Gold */
+.dark .text-silver { color: #C0C0C0; } /* Standard Silver */
+.dark .text-bronze { color: #a23d1b; } /* Standard Bronze */
+
+/* --- Certificate Gradient Backgrounds --- */
+.cert-bg-gold {
+    background-image: linear-gradient(135deg, hsl(222, 47%, 11%) 0%, hsl(45, 53%, 20%) 100%);
+}
+.cert-bg-silver {
+    background-image: linear-gradient(135deg, hsl(222, 47%, 11%) 0%, hsl(220, 13%, 25%) 100%);
+}
+.cert-bg-bronze {
+    background-image: linear-gradient(135deg, hsl(222, 47%, 11%) 0%, hsl(30, 48%, 25%) 100%);
+}
+.cert-medal-emoji {
+    font-size: 5rem; /* 80px */
+    line-height: 1;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+/* --- Styles for Enhanced Energy Saver Game --- */
+#energy-meter-bar-container {
+    width: 100%;
+    height: 15px;
+    background-color: #e5e7eb; /* gray-200 */
+    border-radius: 9999px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.dark #energy-meter-bar-container {
+    background-color: #374151; /* gray-700 */
+}
+
+#energy-meter-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #22c55e; /* green-500 */
+    border-radius: 9999px;
+    transition: width 0.5s ease, background-color 0.5s ease;
+}
+
+.appliance.faulty {
+    animation: flicker 1s linear infinite;
+    background-color: #f59e0b; /* amber-500 */
+    color: #1f2937; /* gray-800 */
+    font-weight: bold;
+}
+
+.essential-icon {
+    font-size: 0.75rem;
+    vertical-align: super;
+    color: #facc15; /* yellow-400 */
+}
+
+.appliance.shake-error {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+
+#question-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.question-box {
+    max-width: 80%;
+}
+
+.question-box p {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.options button {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #4285F4;
+    color: white;
+    border: 4px solid #1c1c1c;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.options button:hover {
+    background-color: #619aff;
+}
+
+.feedback-text {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    font-weight: bold;
+    animation: fade-up 1s ease-out;
+}
+
+@keyframes fade-up {
+    from {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -50px);
+    }
+}
+/* ADD THIS to your styles.css file */
+
+/* ADD 'background-attachment: fixed;' to both rules */
+
+.eco-runner-background {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), url('https://img.freepik.com/premium-photo/minecraft-voxel-inspired-amazing-nature-view-blocky-terrain-stretches-pixelated-sky_1057260-1761.jpg');
+    background-size: cover;
+    background-position: bottom;
+    background-attachment: fixed; /* <-- ADD THIS LINE */
+}
+
+.dark .eco-runner-background {
+    background-image: linear-gradient(rgba(17, 24, 39, 0.2), rgba(17, 24, 39, 0.2)), url('https://img.freepik.com/premium-photo/minecraft-voxel-inspired-amazing-nature-view-blocky-terrain-stretches-pixelated-sky_1057260-1761.jpg');
+    background-position: bottom;
+    background-attachment: fixed; /* <-- AND THIS LINE */
+}
+#eco-runner-container {
+    position: relative; /* This is essential for the overlay to work */
+}
+/* --- Waste Segregation Game Bin Styles --- */
+.waste-bin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+.waste-bin .bin-lid {
+    height: 12px;
+    width: 80%;
+    border-radius: 4px 4px 0 0;
+    border-bottom: 2px solid rgba(0,0,0,0.2);
+}
+.waste-bin .bin-body {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0 0 8px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+.waste-bin .bin-symbol {
+    font-size: 2.5rem; /* 40px */
+    line-height: 1;
+}
+.waste-bin .bin-label {
+    margin-top: 0.5rem;
+    font-weight: 600;
+    color: #1f2937; /* gray-800 */
+}
+.dark .waste-bin .bin-label {
+    color: #e5e7eb; /* gray-200 */
+}
+/* Add to styles.css if inputs don't look right */
+input[type="email"],
+input[type="password"] {
+    /* Example styling, adjust as needed */
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #d1d5db; /* gray-300 */
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #1f2937; /* gray-800 */
+    background-color: #f9fafb; /* gray-50 */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.dark input[type="email"],
+.dark input[type="password"] {
+    border-color: #4b5563; /* gray-600 */
+    color: #e5e7eb; /* gray-200 */
+    background-color: #374151; /* gray-700 */
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: #22c55e; /* green-500 */
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.3);
+}
+/* --- From Uiverse.io by StealthWorm - MODIFIED FOR REUSABILITY --- */
+.uiverse-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 13rem;
+  overflow: hidden;
+  height: 3rem;
+  background-size: 300% 300%;
+  cursor: pointer;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+  transition: 0.5s;
+  animation: gradient_301 5s ease infinite;
+  border: double 4px transparent;
+  background-image: linear-gradient(#212121, #212121),
+    linear-gradient(
+      137.48deg,
+      #ffdb3b 10%,
+      #fe53bb 45%,
+      #8f51ea 67%,
+      #0044ff 87%
+    );
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+/* Changed from #container-stars to .container-stars */
+.container-stars {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transition: 0.5s;
+  backdrop-filter: blur(1rem);
+  border-radius: 5rem;
+}
+
+.uiverse-btn strong {
+  z-index: 2;
+  /* The original font "Avalors Personal Use" is custom. You might need to import it or change it. */
+  /* font-family: "Avalors Personal Use"; */
+  font-size: 12px;
+  letter-spacing: 5px;
+  color: #ffffff;
+  text-shadow: 0 0 4px white;
+}
+
+/* Changed from #glow to .glow */
+.glow {
+  position: absolute;
+  display: flex;
+  width: 12rem;
+}
+
+.glow .circle {
+  width: 100%;
+  height: 30px;
+  filter: blur(2rem);
+  animation: pulse_3011 4s infinite;
+  z-index: -1;
+}
+
+.glow .circle:nth-of-type(1) {
+  background: rgba(254, 83, 186, 0.636);
+}
+
+.glow .circle:nth-of-type(2) {
+  background: rgba(142, 81, 234, 0.704);
+}
+
+.uiverse-btn:hover .container-stars {
+  z-index: 1;
+  background-color: #212121;
+}
+
+.uiverse-btn:hover {
+  transform: scale(1.1);
+}
+
+.uiverse-btn:active {
+  border: double 4px #fe53bb;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  animation: none;
+}
+
+.uiverse-btn:active .circle {
+  background: #fe53bb;
+}
+
+/* Changed from #stars to .stars */
+.stars {
+  position: relative;
+  background: transparent;
+  width: 200rem;
+  height: 200rem;
+}
+
+.stars::after {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  left: -100rem;
+  width: 100%;
+  height: 100%;
+  animation: animStarRotate 90s linear infinite;
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+}
+
+.stars::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 170%;
+  height: 500%;
+  animation: animStar 60s linear infinite;
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+@keyframes animStar {
+  from { transform: translateY(0); }
+  to { transform: translateY(-135rem); }
+}
+
+@keyframes animStarRotate {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0); }
+}
+
+@keyframes gradient_301 {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse_3011 {
+  0% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+  100% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+/* --- From Uiverse.io by Madflows - Softer Green Hover --- */
+.camera-btn {
+  position: relative;
+  overflow: hidden;
+  height: 3rem;
+  padding: 0 2rem;
+  border-radius: 1.5rem;
+  /* Base color remains the light green gradient */
+  background: linear-gradient(
+    82.3deg,
+    rgba(34, 197, 94, 1) 10.8%,
+    rgba(22, 163, 74, 1) 94.3%
+  );
+  background-size: 400%;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.camera-btn:hover::before {
+  transform: scaleX(1);
+}
+
+.camera-btn .button-content {
+  position: relative;
+  z-index: 1;
+}
+
+.camera-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  width: 100%;
+  height: inherit;
+  border-radius: inherit;
+  /* UPDATED: Hover color is now a darker, richer green */
+  background: #15803d; 
+  transition: all 0.475s;
+}
+
+/* --- Hotfix for Main Content Scrolling --- */
+#dashboard-layout > div.flex {
+    height: 100vh;
+}
+
+main#main-content {
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* --- Mindful Living Scroll Fix --- */
+.flex.h-screen {
+    /* Ensure the direct parent of sidebar and main content explicitly fills viewport height */
+    height: 100vh;
+    /* This makes sure content doesn't just push the parent taller */
+    overflow: hidden; 
+}
+
+main#main-content {
+    /* Make main content area fill available height within its flex parent */
+    height: 100%;
+    /* Re-confirm overflow behavior */
+    overflow-y: auto; 
+    /* Also ensure it can shrink if content is small, but respects its max size */
+    min-height: 0; 
+    flex-grow: 1; /* Explicitly tell it to take up available space */
+}
+
+/* Add to styles.css */
+
+/* New background for the Mindful Living section */
+#main-content.mindful-living-background {
+    background-image: url('https://images.pexels.com/photos/1437953/pexels-photo-1437953.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Dark Mode Fix for Mindful Living Title */
+.dark #mindful-living-view h2 {
+    color: #000000; /* Sets the text color to black */
+    text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.7); /* Adds a subtle white glow */
+}
+
+
+
+/* Styles for the meditation playlist */
+#meditation-playlist li.active-track {
+    background-color: #22c55e; /* green-500 */
+    color: white;
+    font-weight: bold;
+}
+
+/* Styles for the breathing animator */
+.breathing-circle {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(45deg, #224539, #6ee7b7);
+    border-radius: 50%;
+    transition: transform 4s ease-in-out;
+}
+
+.breathing-circle.grow {
+    transform: scale(1.5);
+}
+/* Add this to your styles.css */
+.btn-stop {
+    background-color: #ef4444; /* red-500 */
+    color: white;
+    font-weight: bold;
+    border-color: #b91c1c; /* red-700 */
+}
+.btn-stop:hover {
+    background-color: #dc2626; /* red-600 */
+}
+
+/* --- Pipe Patrol Game Styles --- */
+#pipe-patrol-canvas {
+    /* FIX: Replaced non-existent variable with a direct color value */
+    border: 4px solid #374151; /* gray-700 */
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin: 1rem auto;
+}
+
+/* Dark mode variable overrides for Pipe Patrol */
+.dark {
+    /* These variables will be read by the JS game logic */
+    --color-pipe-wall: #2D5B91;
+    --color-pipe-path: #0F172A;
+    --color-drip: #87CEFA;
+    --color-monster-tap: #E2584B;
+    --color-monster-pipe: #E76F00;
+    --color-monster-sprinkler: #1B9C2C;
+    --color-wrench: #FFD700;
+    --color-player: #00BFFF;
+    --color-text: #E0E0E0;
+}
+
+/* Feedback text for quiz and game results */
+.feedback-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem; /* Larger for impact */
+    font-weight: bold;
+    color: white; /* Default, will be overridden by JS */
+    text-shadow: 0 0 10px black;
+    animation: fade-up-and-out 1.5s forwards;
+    z-index: 20;
+}
+
+@keyframes fade-up-and-out {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, 0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -80px);
+    }
+}
+
+
+/* ... existing CSS ... */
+
+/* --- Floating Bot Icon & Modal Styles --- */
+#bot-icon-button.visible {
+    display: block; /* Use this to show the icon */
+}
+
+#bot-chat-modal.visible {
+    display: flex; /* Use this to show the modal */
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Chat window inside the modal */
+#bot-chat-modal #chat-window {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem; /* space-y-3 */
+    background-color: transparent; /* It's inside a styled modal now */
+    padding: 1rem;
+    height: auto; /* Let flex-grow handle the height */
+}
+
+/* We can reuse the user/bot message styles from before, no changes needed there */
+.user-message, .bot-message {
+    max-width: 80%;
+    padding: 0.75rem 1rem;
+    border-radius: 1.25rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+.user-message {
+    align-self: flex-end;
+    background-color: #22c55e;
+    color: white;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.bot-message {
+    align-self: flex-start;
+    background-color: #e5e7eb;
+    color: #1f2937;
+    border-bottom-left-radius: 0.5rem;
+}
+
+.dark .bot-message {
+    background-color: #4b5563;
+    color: #e5e7eb;
+}
+/* --- Live Bot Animation --- */
+
+/* 1. Define the animation keyframes */
+@keyframes bot-float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px); /* How high the bot floats */
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* 2. Apply the animation to the bot icon button */
+#bot-icon-button {
+  /* This runs the animation we defined above */
+  animation: bot-float 3s ease-in-out infinite; /* 3s duration, infinite loop */
+}
+
+/* 3. Add a fun hover effect for interaction */
+#bot-icon-button:hover {
+    transform: scale(1.15); /* Enlarge the icon on hover */
+    animation-play-state: paused; /* Pause the floating animation on hover */
+}

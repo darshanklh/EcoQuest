@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoQuest - Gamified Environmental Challenges</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://static-bundles.visme.co/forms/vismeforms-embed.js"></script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 antialiased">
+
+    <div id="app-container">
+
+        <div id="login-view" class="flex items-center justify-center min-h-screen">
+          <div
+            class="p-2 sm:p-4 bg-white/60 dark:bg-gray-800/60 backdrop-blur-xl rounded-3xl shadow-2xl max-w-md w-full border border-gray-200 dark:border-gray-700"
+          >
+            <div class="flex border-b border-gray-200 dark:border-gray-700">
+              <button
+                data-tab="signin"
+                class="tab-link flex-1 py-3 px-4 text-center font-bold text-lg bg-white/50 dark:bg-gray-700/50 rounded-t-2xl"
+              >
+                Sign In
+              </button>
+              <button
+                data-tab="register"
+                class="tab-link flex-1 py-3 px-4 text-center font-semibold text-lg text-gray-500 dark:text-gray-400"
+              >
+                Register
+              </button>
+            </div>
+
+            <div class="p-6">
+              <div id="signin-content" class="tab-content">
+                <div class="text-center">
+                  <img
+                    src="assets\ll.png"
+                    alt="EcoQuest Logo"
+                    class="w-24 h-24 mx-auto mb-4"
+                  />
+                  <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    Welcome Back!
+                  </h2>
+                  <p class="text-gray-600 dark:text-gray-400 mb-6">
+                    Sign in to continue your quest.
+                  </p>
+
+                  <input
+                    type="email"
+                    id="email-signin"
+                    placeholder="Email Address"
+                    class="w-full p-3 mb-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                  <input
+                    type="password"
+                    id="password-signin"
+                    placeholder="Password"
+                    class="w-full p-3 mb-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                  <button
+                    id="email-password-signin-button"
+                    class="w-full flex items-center justify-center bg-green-500 dark:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:bg-green-600 dark:hover:bg-green-600 transition-colors mb-4"
+                  >
+                    Sign in with Email
+                  </button>
+                  <button
+                    id="google-signin-button"
+                    class="w-full flex items-center justify-center bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-semibold py-3 px-4 rounded-lg shadow-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    <svg
+                      class="w-6 h-6 mr-3"
+                      viewBox="0 0 48 48"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill="#4285F4"
+                        d="M24 9.5c3.23 0 5.94 1.17 7.96 3.09l6.23-6.23C34.37 2.31 29.5 0 24 0 14.52 0 6.45 5.54 2.86 13.56l7.6 5.89C12.18 13.43 17.64 9.5 24 9.5z"
+                      />
+                      <path
+                        fill="#34A853"
+                        d="M46.14 24.5c0-1.63-.15-3.2-.42-4.69H24v8.88h12.38c-.54 2.87-2.14 5.27-4.58 6.95l7.07 5.48C43.58 37.1 46.14 31.28 46.14 24.5z"
+                      />
+                      <path
+                        fill="#FBBC05"
+                        d="M10.46 28.25c-.6-1.77-.94-3.67-.94-5.67s.34-3.9.94-5.67l-7.6-5.89C1.16 14.75 0 19.21 0 24c0 4.79 1.16 9.25 2.86 12.82l7.6-5.57z"
+                      />
+                      <path
+                        fill="#EA4335"
+                        d="M24 48c5.5 0 10.37-1.84 13.83-4.96l-7.07-5.48c-1.84 1.23-4.18 1.96-6.76 1.96-6.36 0-11.82-3.93-13.54-9.41l-7.6 5.89C6.45 42.46 14.52 48 24 48z"
+                      />
+                      <path fill="none" d="M0 0h48v48H0z" />
+                    </svg>
+                    Sign in with Google
+                  </button>
+                  <p id="auth-status" class="text-sm mt-4 text-gray-500">
+                    Connecting...
+                  </p>
+                </div>
+              </div>
+
+              <div id="register-content" class="tab-content hidden">
+                <div class="text-center">
+                    <img
+                        src="assets\ll.png"
+                        alt="EcoQuest Logo"
+                        class="w-24 h-24 mx-auto mb-4"
+                    />
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        Join the Quest & Make an Impact! 🌎💪
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        Don't be trashy. Be a hero. 🦸♻️
+                    </p>
+
+                    <form id="register-form">
+                        <input
+                            type="text"
+                            id="nickname-register"
+                            placeholder="Choose a Nickname"
+                            class="w-full p-3 mb-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+                            required
+                        />
+                        <input
+                            type="email"
+                            id="email-register"
+                            placeholder="Email Address"
+                            class="w-full p-3 mb-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+                            required
+                        />
+                        <input
+                            type="password"
+                            id="password-register"
+                            placeholder="Password (6+ characters)"
+                            class="w-full p-3 mb-6 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500"
+                            required
+                        />
+                        <button
+                            type="submit"
+                            id="register-button"
+                            class="w-full flex items-center justify-center bg-green-500 dark:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg shadow-md hover:bg-green-600 dark:hover:bg-green-600 transition-colors mb-4"
+                        >
+                            Create Account
+                        </button>
+                        <p id="register-status" class="text-sm text-red-500 mt-2 h-4"></p>
+                    </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="dashboard-layout" class="hidden">
+            <div class="flex h-screen bg-gray-100 dark:bg-gray-900 overflow-hidden">
+                <aside class="w-64 flex-shrink-0 bg-white dark:bg-gray-800 border-r dark:border-gray-700 flex flex-col">
+                    <div class="h-20 flex items-center justify-center border-b dark:border-gray-700">
+                        <div class="flex items-center justify-center">
+                            <img src="assets\LL.png" alt="EcoQuest Logo" class="w-8 h-8 mr-2">
+                            <h1 class="text-2xl font-bold text-green-500">EcoQuest</h1>
+                        </div>                               
+                    </div>
+                    <nav id="sidebar-nav" class="flex-1 px-4 py-6 space-y-2">
+                        <a href="#dashboard" class="sidebar-link flex items-center px-4 py-2.5 rounded-lg font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                            Dashboard
+                        </a>
+                        <a href="#tasks" class="sidebar-link flex items-center px-4 py-2.5 rounded-lg font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Real-world Tasks
+                        </a>
+                        <a href="#quizzes" class="sidebar-link flex items-center px-4 py-2.5 rounded-lg font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            <svg class="w-6 h-6 mr-3" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21.582,6.186c-0.23-0.86-0.908-1.538-1.768-1.768C18.267,4,12,4,12,4S5.733,4,4.186,4.418c-0.86,0.23-1.538,0.908-1.768,1.768C2,7.733,2,12,2,12s0,4.267,0.418,5.814c0.23,0.86,0.908,1.538,1.768,1.768C5.733,20,12,20,12,20s6.267,0,7.814-0.418c0.861-0.23,1.538-0.908,1.768-1.768C22,16.267,22,12,22,12S22,7.733,21.582,6.186z M10,15.464V8.536L16,12L10,15.464z"/>
+                            </svg>
+                            <b>Video Library</b>
+                        </a>
+                        <a href="#puzzles" class="sidebar-link flex items-center px-4 py-2.5 rounded-lg font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 011-1h1a2 2 0 100-4H7a1 1 0 01-1-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path></svg>
+                            Puzzles
+                        </a>
+                        <a href="#eco-runner" class="sidebar-link flex items-center px-4 py-2.5 rounded-lg font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            <svg class="w-6 h-6 mr-3" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13.5,5.5c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2S14.6,5.5,13.5,5.5z M9.8,8.9L7,11.7V15h2V12.2l2.1-2.1L13,12v6h2v-7.5l-2.1-2.1C14.7,8.2,14.5,8,14.2,8c-0.3,0-0.5,0.1-0.7,0.3L9.8,8.9z M7,16h10v2H7V16z"/>
+                            </svg>
+                            <b>Eco Runner Game</b>
+                        </a>
+                        <a href="#mindful-living" class="sidebar-link flex items-center px-4 py-2.5 rounded-lg font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Mindful Living
+                        </a>
+                        <a href="#weekly-tasks" class="sidebar-link flex items-center px-4 py-2.5 rounded-lg font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            Weekly Challenge
+                        </a>
+                        <a href="#achievements" class="sidebar-link flex items-center px-4 py-2.5 rounded-lg font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            Achievements
+                        </a>
+                        <a href="#points" class="sidebar-link flex items-center px-4 py-2.5 rounded-lg font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            Leaderboard
+                        </a>
+                    </nav>
+
+                    <div id="user-profile-skeleton" class="p-4 border-t dark:border-gray-700 flex items-center gap-3">
+                        <div class="skeleton w-10 h-10 rounded-full"></div>
+                        <div class="flex-grow">
+                            <div class="skeleton h-4 w-24 mb-2 rounded"></div>
+                            <div class="skeleton h-3 w-16 rounded"></div>
+                        </div>
+                    </div>
+
+                    <div id="user-profile" class="p-4 border-t dark:border-gray-700 flex items-center gap-3 hidden">
+                        <div id="profile-photo-upload-area" class="relative w-10 h-10 rounded-full cursor-pointer group">
+                            <img id="user-photo" class="w-full h-full rounded-full object-cover border-2 border-transparent group-hover:border-green-500 transition-colors" src="https://i.stack.imgur.com/34AD2.jpg" alt="Profile Picture">
+                            <input type="file" id="photo-upload-input" accept="image/*" class="hidden">
+                            <div class="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white text-xs text-center p-1">
+                                Change Photo
+                            </div>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between">
+                                <p class="font-semibold text-gray-900 dark:text-white" id="user-nickname">Player</p>
+                                <button id="dashboard-sign-out-button" title="Sign Out" class="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                                </button>
+                            </div>
+                            <p class="text-sm font-bold text-yellow-500" id="user-points">⭐ 0 Points</p>
+                            <p id="user-badges" class="text-sm font-bold text-green-500 mt-1">🌳 0 Trees Planted</p>
+                            <p id="user-streak" class="text-sm font-bold text-orange-500 mt-1">🔥 0 Day Streak</p>
+                        </div>
+                    </div>
+                </aside>
+
+                <main id="main-content" class="flex-1 p-6 sm:p-10 overflow-y-auto">
+                    
+                    <div id="dashboard-view" class="page-content">
+                        <h2 id="welcome-greeting" class="text-3xl font-bold mb-2 text-gray-900 dark:text-white"></h2>
+                        <p>Welcome back! Here's your progress summary.</p>
+                        <div class="mb-8">
+                            <form id="search-form" class="relative">
+                                <input type="text" id="search-input" placeholder="Search for sections like 'games', 'leaderboard'..." class="w-full pl-5 pr-12 py-3 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-full border-2 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
+                                <button type="submit" class="absolute inset-y-0 right-0 flex items-center justify-center px-4 m-1.5 text-white bg-green-500 rounded-full hover:bg-green-600 transition-colors">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                </button>
+                            </form>
+                            <p id="search-feedback" class="text-center text-red-500 text-sm mt-2 h-4"></p>
+                        </div>
+                        <div id="dashboard-stats-skeleton" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="bg-white/70 dark:bg-gray-800/70 p-6 rounded-2xl"><div class="skeleton h-4 w-20 mb-3 rounded"></div><div class="skeleton h-9 w-12 rounded"></div></div>
+                            <div class="bg-white/70 dark:bg-gray-800/70 p-6 rounded-2xl"><div class="skeleton h-4 w-24 mb-3 rounded"></div><div class="skeleton h-9 w-8 rounded"></div></div>
+                            <div class="bg-white/70 dark:bg-gray-800/70 p-6 rounded-2xl"><div class="skeleton h-4 w-20 mb-3 rounded"></div><div class="skeleton h-9 w-16 rounded"></div></div>
+                        </div>
+
+                        <div id="dashboard-stats-content" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 hidden">
+                            <div class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm p-6 rounded-2xl shadow-md border dark:border-gray-700">
+                                <h3 class="font-semibold text-gray-500 dark:text-gray-400">Total Points</h3>
+                                <p id="dashboard-points" class="text-4xl font-bold text-yellow-500">0</p>
+                            </div>
+                            <div class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm p-6 rounded-2xl shadow-md border dark:border-gray-700">
+                                <h3 class="font-semibold text-gray-500 dark:text-gray-400">Tasks Completed</h3>
+                                <p id="dashboard-completed" class="text-4xl font-bold text-green-500">0</p>
+                            </div>
+                            <div class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm p-6 rounded-2xl shadow-md border dark:border-gray-700">
+                                <h3 class="font-semibold text-gray-500 dark:text-gray-400">Current Rank</h3>
+                                <p id="dashboard-rank" class="text-4xl font-bold text-blue-500">#--</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="flex flex-col">
+        <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Featured Task of the Week</h3>
+        <div id="featured-task-container" class="h-full">
+        </div>
+    </div>
+    <div class="flex flex-col">
+        <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Featured Task of the Month</h3>
+        <div id="featured-monthly-task-container" class="h-full">
+        </div>
+    </div>
+</div>
+                    </div>
+
+                    <div id="tasks-view" class="page-content hidden">
+                        <h2 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">All Real-world Tasks</h2>
+                        <div id="tasks-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                    </div>
+
+                    <div id="points-view" class="page-content hidden">
+                        <h2 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">Points Leaderboard</h2>
+                        <div id="leaderboard" class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl shadow-md p-6 space-y-3 border dark:border-gray-700"></div>
+                    </div>
+
+                    <div id="achievements-view" class="page-content hidden">
+                        <h2 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">Achievements</h2>
+                        <div id="achievements-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+                    </div>
+
+                    <div id="quizzes-view" class="page-content hidden">
+                        <h2 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">Eco Video Library</h2>
+                        <div id="quizzes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        </div>
+                    </div>
+
+                    <div id="puzzles-view" class="page-content hidden">
+                        <h2 class="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Eco Puzzles</h2>
+                        <p>Find all the matching pairs to earn points!</p>
+                        <div class="max-w-md mx-auto bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm p-6 rounded-2xl shadow-md border dark:border-gray-700">
+                            
+                            <div class="text-center mb-4">
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Nature's Memory Match</h3>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                    Wrong Attempts: <span id="wrong-attempts" class="font-bold text-red-500">0</span>
+                                </p>
+                            </div>
+                            <div id="puzzle-grid"></div>
+                            <div class="flex justify-center mt-6">
+                                <button id="reset-puzzle-button" class="btn btn-secondary">
+                                    Reset Puzzle
+                                </button>
+                            </div>
+                            
+                            <p id="puzzle-feedback" class="text-center mt-4 h-6 font-semibold"></p>
+
+                        </div>
+                    </div>
+                    
+                    <div id="eco-runner-view" class="page-content hidden">
+                        <h2 class="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Eco Runner Challenge</h2>
+                        <p>Run as far as you can by answering questions correctly!</p>
+                        
+                        <div id="eco-runner-container" class="w-full max-w-4xl mx-auto mt-4 p-4 bg-gray-900 rounded-xl shadow-2xl border-4 border-gray-700 relative">
+                            <div id="game-ui" class="flex justify-between items-center mb-2 text-white font-bold">
+                                <div id="game-score-display">SCORE: 0</div>
+                                <div id="game-distance-display">DISTANCE: 0m</div>
+                            </div>
+                            <canvas id="eco-runner-canvas" class="w-full bg-gray-800 rounded-lg"></canvas>
+                            <div id="game-overlay" class="absolute inset-0 bg-black/70 flex flex-col items-center justify-center text-center text-white p-4" style="font-family: 'Inter', sans-serif;">
+                                <h2 id="overlay-title" class="text-4xl font-bold mb-4">Eco Runner Challenge</h2>
+                                <p id="overlay-text" class="text-lg mb-8">Jump over obstacles and answer questions to run as far as you can!</p>
+                                <button id="overlay-button" class="btn btn-primary px-10 py-3 text-xl">Start Game</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="mindful-living-view" class="page-content hidden">
+                        <h2 class="text-3xl font-bold mb-8 text-black">Mindful Living 🧘‍♀️</h2>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div>
+                                <div class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm p-6 rounded-2xl shadow-md border dark:border-gray-700 mb-8 h-96 flex flex-col">
+                                    <h3 class="text-2xl font-bold mb-4">Guided Meditations</h3>
+                                    <div class="mb-4 p-4 bg-gray-200 dark:bg-gray-700 rounded-lg">
+                                        <p class="font-semibold text-lg" id="meditation-title">Select a track to begin</p>
+                                        <audio id="audio-player" controls class="w-full mt-2"></audio>
+                                    </div>
+                                    <ul id="meditation-playlist" class="space-y-2 max-h-48 overflow-y-auto flex-grow">
+                                    </ul>
+                                </div>
+
+                                <div class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm p-6 rounded-2xl shadow-md border dark:border-gray-700 text-center overflow-hidden h-96 flex flex-col justify-center">
+                                    <h3 class="text-2xl font-bold mb-6">Mindful Breathing</h3>
+                                    <audio id="breathing-audio" src="assets/breathing audio.mp3" loop></audio>
+                                    
+                                    <div class="flex justify-center items-center mb-6">
+                                        <div id="breathing-animator" class="breathing-circle"></div>
+                                    </div>
+
+                                    <div>
+                                        <p id="breathing-instruction" class="text-xl font-semibold mb-2">Press Start</p>
+                                        <button id="start-breathing-btn" class="btn btn-secondary">Start</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div id="daily-journal-card" class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm p-6 rounded-2xl shadow-md border dark:border-gray-700 mb-8 h-96 flex flex-col">
+                                    <h3 class="text-2xl font-bold mb-4">Daily Journal</h3>
+                                    <p id="journal-prompt" class="mb-4 p-3 bg-green-100 dark:bg-green-900/50 rounded-lg text-green-800 dark:text-green-200 font-medium"></p>
+                                    <textarea id="journal-textarea" rows="5" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 flex-grow" placeholder="Write your thoughts here..."></textarea>
+                                    <button id="save-journal-btn" class="btn btn-primary w-full mt-4">Save Entry & Earn 5 Points</button>
+                                </div>
+
+                                <div id="nature-challenge-card" class="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm p-6 rounded-2xl shadow-md border dark:border-gray-700 h-96 flex flex-col">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="weekly-tasks-view" class="page-content hidden">
+                        <h2 class="text-3xl font-bold mb-2 text-gray-900 dark:text-white">This Week's Challenge</h2>
+                        <p>You have the rest of the week to complete this high-impact task!</p>
+                        <div id="weekly-task-container"></div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <div id="submission-modal" class="hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal max-w-lg w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+            <div class="flex items-center mb-4">
+                <div id="modal-icon" class="text-3xl mr-4"></div>
+                <h2 class="text-2xl font-bold" id="modal-title">Challenge Title</h2>
+            </div>
+            <p class="text-gray-600 dark:text-gray-400 mb-6" id="modal-description">Description goes here.</p>
+            <form id="submission-form">
+                <div class="mb-4">
+                    <label for="photo-upload" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Upload Proof (Mock)</label>
+                    <input type="file" id="photo-upload" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-100 file:text-green-700 hover:file:bg-green-200 dark:file:bg-green-900/50 dark:file:text-green-300 dark:hover:file:bg-green-900 transition-colors cursor-pointer"/>
+                </div>
+                <div class="flex justify-end items-center gap-4 mt-8">
+                    <button type="button" id="cancel-button" class="btn btn-ghost">Cancel</button>
+                    <button type="submit" id="submit-challenge-button" class="btn btn-primary">
+                        <span class="text">Complete (+<span id="modal-points">0</span> Points)</span>
+                        <span class="icon">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="quiz-modal-container" class="hidden fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div id="quiz-modal" class="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 transform transition-all">
+                <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 id="quiz-title" class="text-2xl font-bold text-gray-900 dark:text-white">Quiz Title</h2>
+                    <p id="quiz-progress" class="text-sm text-gray-500 dark:text-gray-400">Question 1 of 3</p>
+                </div>
+                <button id="quiz-close-button" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">&times;</button>
+            </div>
+
+            <div id="quiz-question-container">
+                <p id="quiz-question" class="text-lg font-semibold mb-6 text-gray-800 dark:text-gray-200">What is the most common type of plastic waste found in oceans?</p>
+                <div id="quiz-options" class="space-y-3"></div>
+            </div>
+
+                <div class="flex justify-between items-center mt-8">
+                <button id="quiz-prev-button" class="px-6 py-2 font-medium rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:opacity-50" disabled>Previous</button>
+                <div class="flex gap-4">
+                    <button id="quiz-submit-button" class="animated-button hidden px-8 py-2 font-bold text-white rounded-lg shadow-md">
+                        <span class="text">Submit</span>
+                        <span class="icon">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </span>
+                    </button>
+                    <button id="quiz-next-button" class="animated-button px-8 py-2 font-bold text-white rounded-lg shadow-md" style="background: linear-gradient(45deg, #3b82f6, #6366f1);">
+                        <span class="text">Next</span>
+                        <span class="icon">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </span>
+                    </button>
+                </div>
+            </div>
+                <div id="quiz-loading" class="hidden absolute inset-0 bg-white/80 dark:bg-gray-800/80 flex items-center justify-center rounded-2xl">
+                    <p class="text-lg font-semibold animate-pulse">🤖 AI is grading your answers...</p>
+                </div>
+        </div>
+    </div>
+
+    <div id="results-modal-container" class="hidden fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div id="results-modal" class="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 transform transition-all">
+            <h2 class="text-3xl font-bold text-center mb-4 text-gray-900 dark:text-white">Quiz Results</h2>
+            <p id="results-score" class="text-center text-5xl font-extrabold mb-2"></p>
+            <p id="results-summary" class="text-center text-gray-500 dark:text-gray-400 mb-8"></p>
+            <div id="results-details" class="space-y-4 max-h-60 overflow-y-auto pr-2"></div>
+            <div class="text-center mt-8">
+                <button id="results-close-button" class="animated-green-button px-8 py-2 font-bold text-white rounded-lg shadow-md">
+                    <span class="text">Done</span>
+                    <span class="icon">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="game-modal-container" class="hidden fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 relative">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="game-title" class="text-2xl font-bold text-gray-900 dark:text-white">Mini-Game</h2>
+                <button id="game-close-button" class="text-2xl font-bold text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">&times;</button>
+            </div>
+            <div id="game-content-area" class="min-h-[300px]">
+                </div>
+        </div>
+    </div>
+    <div id="camera-modal-container" class="hidden fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 relative">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="camera-modal-title" class="text-2xl font-bold text-gray-900 dark:text-white">Submit Evidence</h2>
+                <button id="camera-close-button" class="text-2xl font-bold text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">&times;</button>
+            </div>
+            
+            <div id="camera-view" class="relative">
+                <video id="camera-feed" class="w-full h-auto rounded-lg" autoplay playsinline></video>
+                <canvas id="photo-canvas" class="hidden"></canvas> <div id="verification-overlay" class="hidden absolute inset-0 bg-white/80 dark:bg-gray-800/80 flex flex-col items-center justify-center rounded-lg">
+                    <p class="text-lg font-semibold animate-pulse">🤖 AI is verifying your photo...</p>
+                </div>
+            </div>
+
+            <div class="flex justify-center mt-4">
+                <button id="capture-photo-button" class="animated-button px-8 py-3 font-bold text-white rounded-lg shadow-lg">
+                    <span class="text">Capture Photo</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="certificate-view" class="hidden fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-50 p-4 sm:p-8 overflow-y-auto">
+        <div class="max-w-4xl mx-auto w-full relative">
+            <button id="cert-close-button" class="absolute top-4 right-4 text-gray-300 hover:text-red-400 font-bold text-2xl z-10">&times; Close</button>
+            
+            <div id="certificate-content" class="certificate-base text-center p-8 sm:p-12 mt-12">
+                <p class="text-2xl font-semibold text-gray-800 dark:text-gray-300">Certificate of Achievement</p>
+                <h1 id="cert-rank-badge" class="text-6xl my-4"></h1>
+                <p class="text-xl text-gray-700 dark:text-gray-400">This certificate is proudly presented to</p>
+                <h2 id="cert-name" class="text-4xl sm:text-5xl font-bold my-4"></h2>
+                <p class="text-xl text-gray-700 dark:text-gray-400">for achieving the rank of</p>
+                <h3 id="cert-rank" class="text-3xl font-bold my-2"></h3>
+                <p class="text-lg text-gray-700 dark:text-gray-400">in the EcoQuest Challenge.</p>
+                <p id="cert-date" class="mt-8 text-sm text-gray-600 dark:text-gray-500"></p>
+            </div>
+
+            <div class="flex justify-center mt-8">
+                <button id="cert-download-button" class="btn btn-primary">
+                    <span>Download Certificate</span>
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <button id="bot-icon-button" class="hidden fixed bottom-8 right-8 w-16 h-16 bg-green-500 rounded-full shadow-lg hover:scale-110 transition-transform z-40">
+        <img src="assets/bot-icon.png" alt="Eco Assistant" class="w-full h-full object-cover p-1">
+    </button>
+    
+    <div id="bot-chat-modal" class="hidden fixed bottom-28 right-8 w-full max-w-sm h-[60vh] bg-white dark:bg-gray-800 rounded-2xl shadow-2xl z-40 flex flex-col transition-all duration-300 ease-in-out transform scale-95 opacity-0">
+        <div class="flex items-center justify-between p-4 border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-700 rounded-t-2xl">
+            <h3 class="font-bold text-lg text-gray-900 dark:text-green-300">Eco-Mate </h3>
+            <button id="bot-close-button" class="text-2xl font-bold text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">&times;</button>
+        </div>
+        <div id="chat-window" class="flex-grow p-4 overflow-y-auto">
+             </div>
+        <div class="p-4 border-t dark:border-gray-700 flex">
+            <input type="text" id="chat-input" placeholder="Ask me something..." class="flex-grow p-3 rounded-l-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500">
+            <button id="chat-send-button" class="bg-green-500 text-white font-semibold py-3 px-5 rounded-r-lg hover:bg-green-600 transition-colors">Send</button>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
